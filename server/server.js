@@ -18,5 +18,5 @@ app.use("/api", router);
 testConnection();
 
 app.listen(ENV_VARIABLES.PORT, () => {
-  console.log(`😎 Server is running on http://localhost:${ENV_VARIABLES.PORT}`);
+  console.log(`📶 Server is running on http://localhost:${ENV_VARIABLES.PORT}`);
 });
