@@ -12,11 +12,7 @@ userAuthRouter.post(
   userAuthController.register
 );
 
-userAuthRouter.post(
-  API_ENDPOINTS.LOGIN,
-  validate(userSchema.pick({ email: true, password: true })),
-  userAuthController.login
-);
+userAuthRouter.post(API_ENDPOINTS.LOGIN, userAuthController.login);
 
 userAuthRouter.post(API_ENDPOINTS.VERIFY, userAuthController.verifyEmail);
 

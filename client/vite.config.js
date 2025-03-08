@@ -6,7 +6,12 @@ import { fileURLToPath } from "url";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react({
+      jsxImportSource: "@emotion/react"
+    }),
+    tailwindcss()
+  ],
   resolve: {
     alias: {
       "@": path.resolve(path.dirname(fileURLToPath(import.meta.url)), "./src")

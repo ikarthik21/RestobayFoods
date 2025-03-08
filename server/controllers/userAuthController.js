@@ -7,13 +7,20 @@ class UserAuthController {
   async login(req, res) {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({
+        type: "error",
+        message: "Please provide email and password"
+      });
+    }
+
     const [users] = await pool.query("SELECT * FROM users WHERE email = ?", [
       email
     ]);
 
     if (users.length === 0) {
       return res.status(400).json({
-        status: "error",
+        type: "error",
         message: "User not found. Please Register."
       });
     }
@@ -25,20 +32,20 @@ class UserAuthController {
     if (!isMatch) {
       return res
         .status(400)
-        .json({ status: "error", message: "Invalid credentials" });
+        .json({ type: "error", message: "Invalid Email or Password" });
     }
 
     // Generate JWT Token
     const token = jwt.sign(
-      { id: user.id, email: user.email, name: user.name },
+      { id: user.id, email: user.email, name: user.name , role : user.role},
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
     res.status(200).json({
-      status: "success",
+      type: "success",
       message: "Login Successful",
-      token
+      accessToken: token
     });
   }
 
@@ -53,7 +60,7 @@ class UserAuthController {
     if (existingUsers.length > 0) {
       return res
         .status(400)
-        .json({ status: "info", message: "User already exists" });
+        .json({ type: "info", message: "User already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -72,13 +79,13 @@ class UserAuthController {
 
     if (!mailSuccess) {
       return res.status(500).json({
-        status: "error",
+        type: "error",
         message: "Error sending verification email"
       });
     }
 
     res.status(201).json({
-      status: "success",
+      type: "success",
       message: "User registered successfully. Please verify your email.",
       data: {
         id: result.insertId,

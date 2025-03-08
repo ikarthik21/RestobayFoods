@@ -18,6 +18,23 @@
     --logohead: "Anton", sans-serif;
 }
 
+
+::-webkit-scrollbar {
+    width: 0.10rem;
+    height: 0.35rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ef5644;
+    border-radius: 25px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #b92616;
+}
+
+
+
 body {
     height: 100%;
     width: 100%;
@@ -75,4 +92,42 @@ body::-webkit-scrollbar-thumb:hover {
 .kanit-500 {
     font-family: "Kanit", sans-serif;
     font-weight: 500;
+}
+
+.custom-toast {
+    font-size: 15px;
+    display: flex;
+    color: #0e0e10;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.input-box {
+    background-color: white;
+    border: 1px solid #26262b;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px 10px;
+    margin-top: 3px;
+}
+
+.link_button {
+    border: none;
+    outline: none;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.category-btn {
+    font-family: "Kanit", sans-serif;
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: var(--maincolor);
+    color: white;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+
 }

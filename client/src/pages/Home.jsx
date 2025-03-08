@@ -3,7 +3,7 @@ import MAIN_IMG from "@/assets/images/home_main.png";
 
 const Home = () => {
   return (
-    <BlockWrapper margin="ml-4 md:ml-12 mt-4 md:mt-12" padding="p-4">
+    <BlockWrapper>
       <div className="flex flex-col md:flex-row items-center justify-center h-[calc(100vh-70px)]">
         <div className="flex flex-col md:flex-row items-center">
           <div className="mb-4 md:mb-0">
