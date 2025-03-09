@@ -2,12 +2,17 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "@/_components/navigation/NavBar.jsx";
 import routesConfig from "@/utils/routesConfig";
 import SideBar from "./_components/navigation/SideBar.jsx";
+import Modal from "./_components/Modals/Modal.jsx";
+import Cart from "./_components/Cart/Cart.jsx";
 function App() {
   return (
     <div>
       <Router>
         <SideBar />
         <NavBar />
+        <Modal>
+          <Cart />
+        </Modal>
 
         <Routes>
           {routesConfig.map((route) => (

@@ -131,3 +131,19 @@ body::-webkit-scrollbar-thumb:hover {
     margin: 0.5rem;
 
 }
+
+
+.quantity-btn {
+    background-color: var(--maincolor);
+    padding: 2px;
+    min-width: 22px;
+    max-height: 25px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+}
