@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import useModalStore from "../../store/use-modal";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 // eslint-disable-next-line react/prop-types
 function Modal({ children }) {
-  const { isOpen, closeModal, setModalRef, setupClickOutsideHandler } =
-    useModalStore();
+  const { isOpen, closeModal, setModalRef } = useModalStore();
   const localRef = useRef(null);
 
   // Set the modal reference when component mounts and when the ref changes
@@ -17,22 +17,24 @@ function Modal({ children }) {
 
   // Setup click outside handler when modal is open
   useEffect(() => {
-    let cleanup;
-    if (isOpen) {
-      // Small timeout to ensure DOM is fully updated
-      const timeoutId = setTimeout(() => {
-        cleanup = setupClickOutsideHandler();
-      }, 0);
+    if (!isOpen || !localRef.current) return;
 
-      return () => {
-        clearTimeout(timeoutId);
-        if (cleanup) cleanup();
-      };
-    }
-    return () => {
-      if (cleanup) cleanup();
+    // Handler function for clicks
+    const handleClickOutside = (event) => {
+      // If the click is outside the modal (not on the modal or its children)
+      if (localRef.current && !localRef.current.contains(event.target)) {
+        closeModal();
+      }
     };
-  }, [isOpen, setupClickOutsideHandler]);
+
+    // Add the event listener to the document
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener when component unmounts or modal closes
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, closeModal]);
 
   if (!isOpen) return null;
 
@@ -46,7 +48,7 @@ function Modal({ children }) {
     >
       <div className="z-50 h-full w-full flex items-center justify-center">
         <motion.div
-          className="bg-[#fff0df] relative rounded-md p-2 border-2 border-[#1b1b20]"
+          className="bg-[#fff0df] relative rounded-md p-2"
           ref={localRef}
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
@@ -54,9 +56,12 @@ function Modal({ children }) {
           transition={{ duration: 0.3 }}
         >
           <div className="flex flex-col p-2">
-            <div className="flex items-center justify-end">
-              <div onClick={closeModal} color={"white"} cursor={"pointer"}>
-                close
+            <div className="flex items-center justify-end mb-4">
+              <div onClick={closeModal}>
+                <CancelIcon
+                  sx={{ color: "#ef5644", fontSize: "25px" }}
+                  cursor={"pointer"}
+                />
               </div>
             </div>
             {children}

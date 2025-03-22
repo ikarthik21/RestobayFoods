@@ -3,8 +3,9 @@ import { memo } from "react";
 import PropTypes from "prop-types";
 
 const CartItem = memo(({ item, addToCart, removeFromCart }) => (
-  <div className="flex items-center justify-between m-2 border-b pb-2">
-    <div className="flex items-center">
+  <div className="grid grid-cols-4 md:grid-cols-5 gap-2 items-center p-2 border-b">
+    {/* Item Info */}
+    <div className="col-span-2 flex items-center">
       <img
         src="https://restobay.vercel.app/images/vt.jpg"
         className="h-12 w-12 object-cover rounded-xl transition-transform hover:scale-105"
@@ -14,24 +15,30 @@ const CartItem = memo(({ item, addToCart, removeFromCart }) => (
       <h2 className="ml-4">{item.name}</h2>
     </div>
 
-    <div className="flex items-center">
-      <p className="mr-4">Rs: {item.price}</p>
+    {/* Price (Hidden on small screens) */}
+    <p className="text-center hidden md:block">Rs: {item.price}</p>
 
-      <div className="flex items-center mx-4">
-        <button
-          className="quantity-btn"
-          onClick={() => removeFromCart(item.id)}
-        >
-          -
-        </button>
-        <p className="mx-2">{item.quantity}</p>
-        <button className="quantity-btn" onClick={() => addToCart(item)}>
-          +
-        </button>
-      </div>
-
-      <p>Rs: {item.price * item.quantity}</p>
+    {/* Quantity Controls */}
+    <div className="flex items-center justify-center">
+      <button
+        className="px-2 py-1 border rounded  quantity-btn"
+        onClick={() => removeFromCart(item.id)}
+      >
+        -
+      </button>
+      <p>{item.quantity}</p>
+      <button
+        className="px-2 py-1 border rounded quantity-btn"
+        onClick={() => addToCart(item)}
+      >
+        +
+      </button>
     </div>
+
+    {/* Subtotal */}
+    <p className="text-right font-semibold">Rs: {item.price * item.quantity}</p>
+
+    <div></div>
   </div>
 ));
 
@@ -58,35 +65,39 @@ const Cart = () => {
   );
 
   return (
-    <div>
+    <div className="p-4  rounded-lg shadow">
       {cart.length === 0 ? (
-        <p>Your cart is empty</p>
+        <p className="text-center text-gray-500">Your cart is empty</p>
       ) : (
         <>
-          {/* Header */}
-          <div className="flex items-center justify-between m-2 border-b pb-2 font-bold">
-            <div>Item</div>
-            <div className="flex items-center">
-              <div className="mr-4">Price</div>
-              <div className="mx-4">Quantity</div>
-              <div>Subtotal</div>
-            </div>
+          {/* Table Header */}
+          <div className="grid grid-cols-4 md:grid-cols-5 gap-2 items-center p-2 border-b font-bold text-sm md:text-base  ">
+            <div className="col-span-2">Item</div>
+            <div className="text-center hidden md:block">Price</div>
+            <div className="text-center">Quantity</div>
+            <div className="text-right">Subtotal</div>
           </div>
 
-          {/* Cart Items */}
-          {cart.map((item) => (
-            <CartItem
-              key={item.id}
-              item={item}
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-            />
-          ))}
+          <div className="h-80 flex flex-col overflow-y-auto">
+            {/* Cart Items */}
+            {cart.map((item) => (
+              <CartItem
+                key={item.id}
+                item={item}
+                addToCart={addToCart}
+                removeFromCart={removeFromCart}
+              />
+            ))}
+          </div>
 
           {/* Total */}
-          <div className="flex justify-end m-2 pt-2 border-t">
-            <div className="font-bold mr-4">Total:</div>
-            <div className="font-bold">Rs: {totalPrice}</div>
+          <div className="flex justify-end p-2 mt-2 ">
+            <span className="font-bold text-lg">Total: Rs {totalPrice}</span>
+          </div>
+
+          {/* Checkout */}
+          <div className="flex justify-end   mt-2 ">
+            <button className="category-btn">Checkout</button>
           </div>
         </>
       )}
