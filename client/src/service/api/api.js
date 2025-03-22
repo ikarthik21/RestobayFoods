@@ -46,6 +46,25 @@ class RestoService {
       return err.response?.data || { message: err.message };
     }
   };
+
+  cart = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.cart, data);
+
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  getCart = async () => {
+    try {
+      const response = await restoClient.get(ENDPOINTS.cart);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
 }
 
 const restoApiInstance = new RestoService();

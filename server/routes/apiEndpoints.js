@@ -3,7 +3,8 @@ const API_ENDPOINTS = {
   LOGOUT: "/logout",
   REGISTER: "/register",
   VERIFY: "/verify",
-  MENU: "/menu"
+  MENU: "/menu",
+  CART: "/cart"
 };
 
 export default API_ENDPOINTS;

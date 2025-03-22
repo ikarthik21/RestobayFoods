@@ -25,7 +25,7 @@ const NavBar = () => {
             onClick={openModal}
           >
             <FastfoodIcon sx={{ color: "#ef5644" }} />
-            <p className="ml-2 font-bold text-sm">{cart.length}</p>
+            <p className="ml-2 font-bold text-sm">{cart?.length}</p>
           </div>
 
           {isAuthenticated ? (
