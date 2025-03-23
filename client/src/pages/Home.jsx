@@ -44,7 +44,7 @@ const Home = () => {
                 >
                   <Link to="/menu">
                     <motion.button
-                      className="rounded-md p-2 w-32  bg-white text-[#ef5644] cursor-pointer kanit-500 tracking-wider transition transform hover:scale-105"
+                      className="rounded-md p-2 w-32 bg-white text-[#ef5644] cursor-pointer kanit-500 tracking-wider transition transform hover:scale-105"
                       whileHover={{ scale: 1.05 }}
                     >
                       Menu
@@ -53,10 +53,10 @@ const Home = () => {
 
                   <Link to="/table">
                     <motion.button
-                      className="rounded-md p-2 w-32  bg-[#ef5644] text-whitecursor-pointer kanit-500 tracking-wider transition transform hover:scale-105"
+                      className="rounded-md p-2 w-32 bg-[#ef5644] text-white cursor-pointer kanit-500 tracking-wider transition transform hover:scale-105"
                       whileHover={{ scale: 1.05 }}
                     >
-                      <Link to="/table">Table</Link>
+                      Table
                     </motion.button>
                   </Link>
                 </motion.div>

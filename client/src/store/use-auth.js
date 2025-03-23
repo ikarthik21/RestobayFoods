@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { restoClient } from "@/service/api/api.js";
+import useCartStore from "./use-cart";
 
 const parseToken = (token) => {
   try {
@@ -29,12 +30,15 @@ const initializeAuthState = () => {
 
 const useAuthStore = create((set) => ({
   ...initializeAuthState(),
+
   setAccessToken: (token) => {
     const decodedToken = parseToken(token);
     if (!decodedToken) return;
+
     Cookies.set("role", decodedToken.role, { path: "/" });
     Cookies.set("accessToken", token, { path: "/" });
     restoClient.defaults.headers["Authorization"] = `Bearer ${token}`;
+
     set({
       accessToken: token,
       isAuthenticated: true,
@@ -42,6 +46,9 @@ const useAuthStore = create((set) => ({
       role: decodedToken.role,
       userId: decodedToken.userid
     });
+
+    // ✅ Fetch cart after login
+    useCartStore.getState().initializeCart();
   },
 
   removeAccessToken: async () => {
