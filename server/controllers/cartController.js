@@ -2,54 +2,62 @@ import { pool } from "../config/database.js";
 
 class CartController {
   async addToCart(req, res) {
-    const userId = req.user[0].id;
+    try {
+      const userId = req.userId;
+      const { item_id } = req.body;
 
-    const { item_id } = req.body;
+      // Check if the user has an existing cart
+      const [rows] = await pool.query("SELECT * FROM carts WHERE user_id = ?", [
+        userId
+      ]);
 
-    const [rows] = await pool.query("SELECT * FROM carts WHERE user_id = ?", [
-      userId
-    ]);
+      let existingCart = rows[0];
 
-    const existingCart = rows[0];
+      if (!existingCart) {
+        const [result] = await pool.query(
+          "INSERT INTO carts (user_id) VALUES (?)",
+          [userId]
+        );
+        existingCart = { id: result.insertId }; // Get the new cart ID
+      }
 
-    if (!existingCart.id) {
-      await pool.query("INSERT INTO carts SET ?", {
-        user_id: userId
-      });
-    }
-
-    // add item to cart_items table
-    const [cartItem] = await pool.query(
-      "SELECT * FROM cart_items WHERE cart_id = ? AND item_id = ?",
-      [existingCart.id, item_id]
-    );
-
-    // find the price of the item
-    const [price_record] = await pool.query(
-      "SELECT price FROM menu WHERE id = ?",
-      [item_id]
-    );
-
-    const price = price_record[0].price;
-
-    if (cartItem.length == 0) {
-      await pool.query("INSERT INTO cart_items SET ?", {
-        cart_id: existingCart.id,
-        item_id: item_id,
-        quantity: 1,
-        price: price
-      });
-    } else {
-      await pool.query(
-        "UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND item_id = ?",
+      // Find if the item already exists in the cart
+      const [cartItem] = await pool.query(
+        "SELECT * FROM cart_items WHERE cart_id = ? AND item_id = ?",
         [existingCart.id, item_id]
       );
-    }
 
-    res.status(200).json({ message: "Item added to cart" });
+      // Get the price of the item
+      const [price_record] = await pool.query(
+        "SELECT price FROM menu WHERE id = ?",
+        [item_id]
+      );
+
+      if (!price_record.length) {
+        return res.status(404).json({ message: "Item not found in menu" });
+      }
+
+      const price = price_record[0].price;
+
+      if (cartItem.length === 0) {
+        await pool.query(
+          "INSERT INTO cart_items (cart_id, item_id, quantity, price) VALUES (?, ?, ?, ?)",
+          [existingCart.id, item_id, 1, price]
+        );
+      } else {
+        await pool.query(
+          "UPDATE cart_items SET quantity = quantity + 1 WHERE cart_id = ? AND item_id = ?",
+          [existingCart.id, item_id]
+        );
+      }
+      res.status(200).json({ message: "Item added to cart" });
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      res.status(500).json({ message: "Internal Server Error" });
+    }
   }
   async removeFromCart(req, res) {
-    const userId = req.user[0].id;
+    const userId = req.userId;
     const { item_id } = req.body;
 
     const [rows] = await pool.query("SELECT * FROM carts WHERE user_id = ?", [
@@ -84,10 +92,9 @@ class CartController {
 
     return res.status(200).json({ message: "Cart updated succesfully" });
   }
-
   async getCart(req, res) {
     try {
-      const userId = req.user[0].id;
+      const userId = req.userId;
 
       // Fetch the user's cart
       const [rows] = await pool.query("SELECT * FROM carts WHERE user_id = ?", [

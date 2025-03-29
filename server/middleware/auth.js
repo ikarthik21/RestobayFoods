@@ -19,6 +19,7 @@ const authenticateUser = async (req, res, next) => {
       return res.status(401).json({ message: "User not found" });
     }
     req.user = user;
+    req.userId = req.user[0].id;
     next();
   } catch (err) {
     return res.status(403).json({ message: "Invalid token" });

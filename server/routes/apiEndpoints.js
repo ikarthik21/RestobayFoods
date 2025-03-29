@@ -4,7 +4,10 @@ const API_ENDPOINTS = {
   REGISTER: "/register",
   VERIFY: "/verify",
   MENU: "/menu",
-  CART: "/cart"
+  CART: "/cart",
+  ORDER: "/order",
+  VERIFY_PAYMENT: "/payment/verify",
+  ORDERS: "/orders"
 };
 
 export default API_ENDPOINTS;

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import Razorpay from "razorpay";
 
 export const sendVerificationEmail = async (userId, name, email) => {
   try {
@@ -41,3 +42,8 @@ export const sendVerificationEmail = async (userId, name, email) => {
     return false;
   }
 };
+
+export const razorpayHelper = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET
+});

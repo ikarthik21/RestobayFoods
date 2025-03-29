@@ -65,6 +65,33 @@ class RestoService {
       return err.response?.data || { message: err.message };
     }
   };
+
+  makeOrder = async () => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.order);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  verifyPayment = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.verifyPayment, data);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  getOrders = async () => {
+    try {
+      const response = await restoClient.get(ENDPOINTS.getOrders);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
 }
 
 const restoApiInstance = new RestoService();

@@ -12,7 +12,6 @@ const useCartStore = create((set, get) => {
   const initializeCart = async () => {
     set({ isLoading: true, error: null });
     try {
-      
       const { cart } = await restoApiInstance.getCart();
       set({ cart: cart || [], isLoaded: true, isLoading: false });
     } catch (error) {
@@ -76,6 +75,10 @@ const useCartStore = create((set, get) => {
         get().initializeCart(); // ✅ Fetch cart only if not loaded
       }
       return get().cart || [];
+    },
+
+    refreshCart: async () => {
+      await get().initializeCart();  
     }
   };
 });

@@ -17,7 +17,6 @@ commonRouter.post(API_ENDPOINTS.CART, authenticateUser, (req, res) => {
   }
 });
 
-
 commonRouter.get(API_ENDPOINTS.CART, authenticateUser, cartController.getCart);
 
 export default commonRouter;

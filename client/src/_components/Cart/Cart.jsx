@@ -1,6 +1,8 @@
 import useCartStore from "../../store/use-cart";
 import { memo } from "react";
 import PropTypes from "prop-types";
+import { displayRazorpay } from "../Pay/Razorpay";
+import { useNavigate } from "react-router-dom";
 
 const CartItem = memo(({ item, addToCart, removeFromCart }) => (
   <div className="grid grid-cols-4 md:grid-cols-5 gap-2 items-center p-2 border-b">
@@ -57,6 +59,7 @@ CartItem.propTypes = {
 
 const Cart = () => {
   const { cart, addToCart, removeFromCart } = useCartStore();
+  const navigate = useNavigate();
 
   // Calculate total price
   const totalPrice = cart.reduce(
@@ -65,7 +68,7 @@ const Cart = () => {
   );
 
   return (
-    <div className="p-4  rounded-lg shadow">
+    <div className="p-4 rounded-lg shadow">
       {cart.length === 0 ? (
         <p className="text-center text-gray-500">Your cart is empty</p>
       ) : (
@@ -97,7 +100,12 @@ const Cart = () => {
 
           {/* Checkout */}
           <div className="flex justify-end   mt-2 ">
-            <button className="category-btn">Checkout</button>
+            <button
+              className="category-btn"
+              onClick={() => displayRazorpay(navigate)}
+            >
+              Pay
+            </button>
           </div>
         </>
       )}
