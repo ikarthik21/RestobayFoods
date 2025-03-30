@@ -329,7 +329,7 @@ class OrderController {
       const [orders] = await pool.query(
         `SELECT 
            o.id, o.user_id, o.total_amount, o.status,
-           o.payment_status, o.transaction_id,
+           o.payment_status,
            o.created_at, o.updated_at,
            JSON_ARRAYAGG(
              JSON_OBJECT(

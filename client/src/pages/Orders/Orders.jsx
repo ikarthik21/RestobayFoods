@@ -32,36 +32,38 @@ const Orders = () => {
                   alt=""
                 />
               </div>
-              <div>
-                <h2 className="font-semibold m-1">
+              <div className="ubuntu">
+                <h2 className="font-semibold  text-[#ef5644] m-1">
                   Order ID :{"  "}
-                  <span className="text-sm font-normal">
-                    {order.transaction_id}
+                  <span className="text-sm font-bold cursor-pointer underline  text-black">
+                    {order.id}
                   </span>
                 </h2>
-                <h2 className="font-semibold m-1">
+                <h2 className="font-semibold  text-[#ef5644] m-1">
                   Status :{"  "}
-                  <span className="text-sm font-normal">{order.status}</span>
+                  <span className="text-sm font-normal  text-black">
+                    {order.status}
+                  </span>
                 </h2>
                 <div className="flex items-center">
-                  <h2 className="font-semibold m-1">Items:</h2>
+                  <h2 className="font-semibold m-1 mr-1 text-[#ef5644]">Items :</h2>
                   {order.items.map((item) => (
                     <div key={item.id} className="flex items-center">
-                      <span className="ml-2">
-                        {item.name} x {item.quantity}
+                      <span className="mr-2 text-sm text-black">
+                        {item.name} x{item.quantity}
                       </span>
                     </div>
                   ))}
                 </div>
-                <h2 className="font-semibold m-1">
+                <h2 className="font-semibold m-1   text-[#ef5644]">
                   Amount :{"  "}
-                  <span className="text-sm font-normal">
+                  <span className="text-sm font-normal  text-black">
                     {order.total_amount}
                   </span>
                 </h2>
-                <h2 className="font-semibold m-1">
+                <h2 className="font-semibold m-1  text-[#ef5644]">
                   Placed At :{"  "}
-                  <span className="text-sm font-normal">
+                  <span className="text-sm font-normal text-black">
                     {new Date(order.updated_at).toLocaleString()}
                   </span>
                 </h2>
