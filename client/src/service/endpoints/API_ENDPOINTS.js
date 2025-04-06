@@ -4,6 +4,9 @@ export const ENDPOINTS = {
   menu: "/api/menu",
   cart: "/api/cart",
   order: "/api/resto/order",
+  tableOrder: "/api/resto/tables/order",
   verifyPayment: "/api/resto/payment/verify",
-  getOrders: "/api/resto/orders"
+  getOrders: "/api/resto/orders",
+  getTableBookings: "/api/resto/tables/bookings",
+  checkTableAvailability: "/api/resto/tables/check"
 };

@@ -17,7 +17,9 @@ const Orders = () => {
 
   return (
     <BlockWrapper>
-      <h1 className="anton tracking-wide text-xl text-[#ef5644]">Orders</h1>
+      <h1 className="anton  text-center tracking-wide text-2xl text-[#ef5644]">
+        Orders
+      </h1>
       <div>
         {data?.orders?.length > 0 ? (
           data.orders.map((order) => (
@@ -46,7 +48,9 @@ const Orders = () => {
                   </span>
                 </h2>
                 <div className="flex items-center">
-                  <h2 className="font-semibold m-1 mr-1 text-[#ef5644]">Items :</h2>
+                  <h2 className="font-semibold m-1 mr-1 text-[#ef5644]">
+                    Items :
+                  </h2>
                   {order.items.map((item) => (
                     <div key={item.id} className="flex items-center">
                       <span className="mr-2 text-sm text-black">

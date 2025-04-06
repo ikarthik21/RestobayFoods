@@ -102,7 +102,7 @@ const Cart = () => {
           <div className="flex justify-end   mt-2 ">
             <button
               className="category-btn"
-              onClick={() => displayRazorpay(navigate)}
+              onClick={() => displayRazorpay(navigate, "cart")}
             >
               Pay
             </button>

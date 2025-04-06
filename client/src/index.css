@@ -147,3 +147,12 @@ body::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
     color: white;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #ef5644;
+    border-radius: 25px;
+}

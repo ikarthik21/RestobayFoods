@@ -15,7 +15,7 @@ function loadScript(src) {
   });
 }
 
-export async function displayRazorpay(navigate) {
+export async function displayRazorpay(navigate, type, data) {
   // ✅ Accept navigate as a parameter
 
   try {
@@ -29,7 +29,13 @@ export async function displayRazorpay(navigate) {
 
     let order;
     try {
-      order = await restoApiInstance.makeOrder();
+      if (type === "cart") {
+        order = await restoApiInstance.makeOrder();
+      } else if (type === "table") {
+        order = await restoApiInstance.makeTableOrder(data);
+        console.log(order);
+      }
+
       if (!order?.orderId || !order?.amount) {
         throw new Error("Invalid order data received");
       }
@@ -53,14 +59,18 @@ export async function displayRazorpay(navigate) {
             orderCreationId: order.orderId,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpayOrderId: response.razorpay_order_id,
-            razorpaySignature: response.razorpay_signature
+            razorpaySignature: response.razorpay_signature,
+            artifact: order.artifact
           };
 
           const result = await restoApiInstance.verifyPayment(data);
-          console.log(result);
 
           if (result?.status === "success") {
             useModalStore.getState().closeModal();
+            if (data.artifact === "TABLE") {
+              navigate("/bookings/table");
+              return;
+            }
             useCartStore.getState().refreshCart();
             navigate("/orders");
           }

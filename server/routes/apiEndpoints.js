@@ -6,8 +6,11 @@ const API_ENDPOINTS = {
   MENU: "/menu",
   CART: "/cart",
   ORDER: "/order",
+  TABLE_ORDER: "/tables/order",
   VERIFY_PAYMENT: "/payment/verify",
-  ORDERS: "/orders"
+  GET_TABLE_BOOKINGS: "/tables/bookings",
+  ORDERS: "/orders",
+  CHECK_TABLE_AVAILABILITY: "/tables/check"
 };
 
 export default API_ENDPOINTS;

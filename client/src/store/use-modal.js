@@ -2,10 +2,12 @@ import { create } from "zustand";
 
 const useModalStore = create((set, get) => ({
   isOpen: false,
+  component: null,
   modalRef: { current: null },
-  openModal: () => set({ isOpen: true }),
-  closeModal: () => set({ isOpen: false }),
+  openModal: (component) => set({ isOpen: true, component }),
+  closeModal: () => set({ isOpen: false, component: null }),
   setModalRef: (ref) => set({ modalRef: { current: ref } }),
+
   setupClickOutsideHandler: () => {
     const handleClickOutside = (event) => {
       const { modalRef, closeModal, isOpen } = get();

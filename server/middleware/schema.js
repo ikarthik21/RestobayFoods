@@ -1,4 +1,5 @@
 import { z } from "zod";
+import dayjs from "dayjs";
 
 export const userSchema = z.object({
   name: z
@@ -18,3 +19,32 @@ export const userSchema = z.object({
     .regex(/[a-z]/, "Password must contain at least one lowercase letter")
     .regex(/[0-9]/, "Password must contain at least one number")
 });
+
+export const tableSchema = z
+  .object({
+    bookingDate: z
+      .string()
+      .refine((val) => dayjs(val, "DD-MM-YYYY").isValid(), {
+        message: "Invalid date format. Use DD-MM-YYYY"
+      }),
+    partySize: z.number().min(1, "Party size must be at least 1"),
+    startTime: z
+      .string()
+      .refine((val) => dayjs(`2000-01-01T${val}`).isValid(), {
+        message: "Invalid time format. Use HH:mm"
+      }),
+    endTime: z.string().refine((val) => dayjs(`2000-01-01T${val}`).isValid(), {
+      message: "Invalid time format. Use HH:mm"
+    })
+  })
+  .refine(
+    (data) => {
+      const start = dayjs(`2000-01-01T${data.startTime}`);
+      const end = dayjs(`2000-01-01T${data.endTime}`);
+      return end.isAfter(start);
+    },
+    {
+      message: "End time must be greater than start time",
+      path: ["endTime"]
+    }
+  );

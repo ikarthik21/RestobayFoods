@@ -75,6 +75,15 @@ class RestoService {
     }
   };
 
+  makeTableOrder = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.tableOrder, data);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
   verifyPayment = async (data) => {
     try {
       const response = await restoClient.post(ENDPOINTS.verifyPayment, data);
@@ -90,6 +99,34 @@ class RestoService {
       return response.data;
     } catch (err) {
       return err.response?.data || { message: err.message };
+    }
+  };
+
+  getTableBookings = async () => {
+    try {
+      const response = await restoClient.get(ENDPOINTS.getTableBookings);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  checkTableAvailability = async (data) => {
+    try {
+      const response = await restoClient.post(
+        ENDPOINTS.checkTableAvailability,
+        data
+      );
+      return response.data;
+    } catch (err) {
+      return {
+        type: "error",
+        message:
+          err.response?.data?.errors?.[0]?.message ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      };
     }
   };
 }

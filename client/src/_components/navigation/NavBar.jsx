@@ -22,7 +22,7 @@ const NavBar = () => {
         <div className="flex items-center space-x-4">
           <div
             className="bg-white flex items-center  px-3 py-1.5 rounded cursor-pointer"
-            onClick={openModal}
+            onClick={() => openModal("cart")}
           >
             <FastfoodIcon sx={{ color: "#ef5644" }} />
             <p className="ml-2 font-bold text-sm">{cart?.length}</p>

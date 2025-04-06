@@ -163,7 +163,8 @@ class OrderController {
         orderCreationId,
         razorpayPaymentId,
         razorpayOrderId,
-        razorpaySignature
+        razorpaySignature,
+        artifact
       } = req.body;
 
       // Verify signature
@@ -177,6 +178,69 @@ class OrderController {
         return res.status(400).json({
           status: "error",
           message: "Payment verification failed"
+        });
+      }
+
+      if (artifact === "TABLE") {
+        // Find the table booking payment record
+        const [paymentRecord] = await connection.query(
+          `SELECT bp.id, bp.booking_id, bp.amount, bp.payment_status, tb.user_id 
+           FROM table_booking_payments bp
+           JOIN table_bookings tb ON bp.booking_id = tb.id
+           WHERE bp.transaction_id = ? AND tb.user_id = ?`,
+          [orderCreationId, userId]
+        );
+
+        if (!paymentRecord.length) {
+          return res.status(404).json({
+            status: "error",
+            message: "Table booking payment record not found"
+          });
+        }
+
+        const {
+          id: paymentId,
+          booking_id: bookingId,
+          payment_status
+        } = paymentRecord[0];
+
+        // Check if payment is already processed
+        if (payment_status === "COMPLETED") {
+          return res.status(200).json({
+            status: "success",
+            message: "Payment already verified and completed",
+            bookingId
+          });
+        }
+
+        // Update payment details
+        await connection.query(
+          `UPDATE table_booking_payments 
+           SET payment_status = 'COMPLETED', 
+               payment_method = 'razorpay',
+               payment_date = NOW(),
+               booking_id = ?,
+               updated_at = NOW() 
+           WHERE id = ?`,
+          [bookingId, paymentId]
+        );
+
+        await connection.query(
+          `UPDATE table_bookings 
+           SET status = 'CONFIRMED', 
+           updated_at = NOW() 
+           WHERE id = ?`,
+          [bookingId]
+        );
+
+        await connection.commit();
+
+        return res.status(200).json({
+          status: "success",
+          message: "Table booking payment verified successfully",
+          bookingId,
+          paymentId: razorpayPaymentId,
+          artifact: "TABLE"
         });
       }
 
@@ -325,7 +389,6 @@ class OrderController {
   async getOrders(req, res) {
     try {
       const userId = req.userId;
-
       const [orders] = await pool.query(
         `SELECT 
            o.id, o.user_id, o.total_amount, o.status,

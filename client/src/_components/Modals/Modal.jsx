@@ -2,41 +2,40 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import useModalStore from "../../store/use-modal";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Cart from "../Cart/Cart";
+import Table from "../Table/Table";
 
-// eslint-disable-next-line react/prop-types
-function Modal({ children }) {
-  const { isOpen, closeModal, setModalRef } = useModalStore();
+const MODAL_COMPONENTS = {
+  cart: Cart,
+  table: Table
+};
+
+function Modal() {
+  const { isOpen, component, closeModal, setModalRef } = useModalStore();
   const localRef = useRef(null);
 
-  // Set the modal reference when component mounts and when the ref changes
   useEffect(() => {
     if (localRef.current) {
       setModalRef(localRef.current);
     }
   }, [localRef, setModalRef]);
 
-  // Setup click outside handler when modal is open
   useEffect(() => {
     if (!isOpen || !localRef.current) return;
 
-    // Handler function for clicks
     const handleClickOutside = (event) => {
-      // If the click is outside the modal (not on the modal or its children)
       if (localRef.current && !localRef.current.contains(event.target)) {
         closeModal();
       }
     };
 
-    // Add the event listener to the document
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Clean up the event listener when component unmounts or modal closes
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, closeModal]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !component) return null;
+
+  const ComponentToRender = MODAL_COMPONENTS[component];
 
   return (
     <motion.div
@@ -64,7 +63,7 @@ function Modal({ children }) {
                 />
               </div>
             </div>
-            {children}
+            <ComponentToRender />
           </div>
         </motion.div>
       </div>

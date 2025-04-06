@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import Razorpay from "razorpay";
+import dayjs from "dayjs";
 
 export const sendVerificationEmail = async (userId, name, email) => {
   try {
@@ -47,3 +48,15 @@ export const razorpayHelper = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET
 });
+
+export const getTablePrice = (bookingDate, startTime, endTime) => {
+  const start = dayjs(`${bookingDate}T${startTime}`);
+  const end = dayjs(`${bookingDate}T${endTime}`);
+
+  if (!start.isValid() || !end.isValid()) return 0;
+
+  const durationInHours = end.diff(start, "hour", true);
+  const roundedHours = Math.ceil(durationInHours);
+
+  return Math.max(roundedHours, 1) * 100;
+};
