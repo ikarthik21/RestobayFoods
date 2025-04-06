@@ -5,7 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "npm run test"
+    "test": "npm run test",
+    "start": "node server"
   },
   "author": "Karthikeya Kallapu",
   "license": "ISC",
