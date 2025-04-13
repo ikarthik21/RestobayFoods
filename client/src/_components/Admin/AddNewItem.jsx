@@ -5,7 +5,7 @@ import restoApiInstance from "../../service/api/api";
 import useModalStore from "../../store/use-modal";
 import Toast from "../Toasts/Toast";
 
-const AddItem = () => {
+const AddNewItem = () => {
   const {
     handleChange,
     data: formData,
@@ -255,4 +255,4 @@ const AddItem = () => {
   );
 };
 
-export default AddItem;
+export default AddNewItem;

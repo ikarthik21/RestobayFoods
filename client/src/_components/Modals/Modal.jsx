@@ -4,13 +4,13 @@ import useModalStore from "../../store/use-modal";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Cart from "../Cart/Cart";
 import Table from "../Table/Table";
-import AddItem from "../Admin/Additem";
+import AddNewItem from "../Admin/AddNewItem";
 import EditItem from "../Admin/EditItem";
 
 const MODAL_COMPONENTS = {
   cart: Cart,
   table: Table,
-  additem: AddItem,
+  additem: AddNewItem,
   edititem: EditItem
 };
 
