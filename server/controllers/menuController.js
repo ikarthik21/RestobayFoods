@@ -3,7 +3,7 @@ import { pool } from "../config/database.js";
 class MenuController {
   async getMenu(req, res) {
     try {
-      const [menu] = await pool.query("SELECT * FROM menu");
+      const [menu] = await pool.query("SELECT * FROM menu ");
       const categories = [...new Set(menu.map((item) => item.category))];
       res.status(200).json({
         type: "success",

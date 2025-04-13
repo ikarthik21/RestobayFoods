@@ -8,5 +8,11 @@ export const ENDPOINTS = {
   verifyPayment: "/api/resto/payment/verify",
   getOrders: "/api/resto/orders",
   getTableBookings: "/api/resto/tables/bookings",
-  checkTableAvailability: "/api/resto/tables/check"
+  checkTableAvailability: "/api/resto/tables/check",
+  // For Admin
+  AllFoodOrders: "/api/admin/orders",
+  AllTableBookings: "/api/admin/table/bookings",
+  getUsers: "/api/admin/users",
+  updateMenu: "/api/admin/menu/update",
+  uploadImage: "/api/admin/upload/image"
 };

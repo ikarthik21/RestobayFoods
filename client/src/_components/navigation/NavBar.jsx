@@ -3,11 +3,13 @@ import useAuthStore from "../../store/use-auth";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import useCartStore from "@/store/use-cart";
 import useModalStore from "../../store/use-modal";
+import Cookies from "js-cookie";
 
 const NavBar = () => {
   const { isAuthenticated, removeAccessToken } = useAuthStore();
   const { cart } = useCartStore();
   const { openModal } = useModalStore();
+  const isAdmin = Cookies.get("role") === "admin";
 
   return (
     <nav className="fixed top-0 left-0 z-30 w-full bg-[#fff0df]">
@@ -20,6 +22,14 @@ const NavBar = () => {
         {/* Login & Profile */}
 
         <div className="flex items-center space-x-4">
+          {isAdmin && (
+            <Link to="/admin/dashboard">
+              <button className="btn-var-1 kanit-500 cursor-pointer">
+                <p>Admin Dashboard</p>
+              </button>
+            </Link>
+          )}
+
           <div
             className="bg-white flex items-center  px-3 py-1.5 rounded cursor-pointer"
             onClick={() => openModal("cart")}

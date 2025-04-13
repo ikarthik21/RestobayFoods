@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import Razorpay from "razorpay";
 import dayjs from "dayjs";
+import multer from "multer";
+import path from "path";
 
 export const sendVerificationEmail = async (userId, name, email) => {
   try {
@@ -60,3 +62,31 @@ export const getTablePrice = (bookingDate, startTime, endTime) => {
 
   return Math.max(roundedHours, 1) * 100;
 };
+
+// multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Make sure this directory exists
+  },
+  filename: (req, file, cb) => {
+    cb(null, "image-" + file.originalname);
+  }
+});
+
+// File filter to only allow images
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true);
+  } else {
+    cb(new Error("Not an image! Please upload only images."), false);
+  }
+};
+
+// Set up multer upload
+export const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  }
+});

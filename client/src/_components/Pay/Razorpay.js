@@ -33,7 +33,6 @@ export async function displayRazorpay(navigate, type, data) {
         order = await restoApiInstance.makeOrder();
       } else if (type === "table") {
         order = await restoApiInstance.makeTableOrder(data);
-        console.log(order);
       }
 
       if (!order?.orderId || !order?.amount) {

@@ -129,6 +129,66 @@ class RestoService {
       };
     }
   };
+
+  // Admin APIs
+
+  getAllFoodOrders = async () => {
+    try {
+      const response = await restoClient.get(ENDPOINTS.AllFoodOrders);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  getAllTableBookings = async () => {
+    try {
+      const response = await restoClient.get(ENDPOINTS.AllTableBookings);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  getAllUsers = async () => {
+    try {
+      const response = await restoClient.get(ENDPOINTS.getUsers);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  updateMenu = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.updateMenu, data);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  addItemtoMenu = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.addItemtoMenu, data);
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
+
+  async uploadImage(formData) {
+    try {
+      const response = await restoClient.post(ENDPOINTS.uploadImage, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error;
+    }
+  }
 }
 
 const restoApiInstance = new RestoService();

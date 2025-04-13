@@ -2,7 +2,7 @@ import { Router } from "express";
 import API_ENDPOINTS from "./apiEndpoints.js";
 import cartController from "../controllers/cartController.js";
 import menuController from "../controllers/menuController.js";
-import authenticateUser from "../middleware/auth.js";
+import { authenticateUser } from "../middleware/auth.js";
 
 const commonRouter = Router();
 

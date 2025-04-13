@@ -9,7 +9,8 @@ import useCartStore from "../../store/use-cart";
 
 const MenuItem = memo(({ item, addToCart, removeFromCart }) => (
   <div
-    className="bg-[#fde4c7] flex flex-col items-center rounded-xl  justify-center m-2 p-3 w-64 h-56"
+    // eslint-disable-next-line react/prop-types
+    className={` ${!item.available ? "opacity-25 pointer-events-none ":""} bg-[#fde4c7] flex flex-col items-center rounded-xl  justify-center m-2 p-3 w-64 h-56`}
     key={item.id}
   >
     <div className="overflow-hidden rounded-xl">

@@ -80,8 +80,6 @@ class TableContoller {
 
       const amount = getTablePrice(formattedDate, startTime, endTime);
 
-      console.log(amount);
-
       // Check if the table exists and is active
       const [tableCheck] = await connection.query(
         `SELECT id,table_number, capacity, status FROM tables WHERE id = ?`,
