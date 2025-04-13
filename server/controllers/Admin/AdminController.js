@@ -156,7 +156,7 @@ class AdminController {
           }
 
           queryValues.push(payload.id);
-          const queryString = `UPDATE MENU SET ${updateFields.join(
+          const queryString = `UPDATE menu SET ${updateFields.join(
             ", "
           )} WHERE id = ?`;
 
