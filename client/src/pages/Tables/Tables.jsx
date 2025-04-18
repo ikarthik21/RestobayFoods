@@ -328,7 +328,7 @@ const Tables = () => {
                   </Box>
                 ) : (
                   <Box className="space-y-4 h-96  mt-4 overflow-scroll custom-scrollbar">
-                    {availableTables.length > 0 ? (
+                    {availableTables?.length > 0 ? (
                       availableTables.map((table) => (
                         <Paper
                           key={table.id}
