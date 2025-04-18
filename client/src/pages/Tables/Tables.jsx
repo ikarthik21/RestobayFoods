@@ -317,7 +317,7 @@ const Tables = () => {
                 >
                   {isLoading
                     ? "Searching for tables..."
-                    : availableTables.length > 0
+                    : availableTables?.length > 0
                     ? "Available Tables"
                     : "No Tables Available"}
                 </Typography>
