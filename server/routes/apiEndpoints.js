@@ -8,7 +8,7 @@ const API_ENDPOINTS = {
   ORDER: "/order",
   TABLE_ORDER: "/tables/order",
   VERIFY_PAYMENT: "/payment/verify",
-  GET_TABLE_BOOKINGS: "/table/bookings",
+  GET_TABLE_BOOKINGS: "/tables/bookings",
   ORDERS: "/orders",
   CHECK_TABLE_AVAILABILITY: "/tables/check",
   USERS: "/users",
