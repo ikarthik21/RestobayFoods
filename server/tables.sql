@@ -44,7 +44,8 @@ CREATE TABLE
             'PROCESSING',
             'CANCELLED',
             'REFUNDED',
-            'PARTIALLY_REFUNDED'
+            'PARTIALLY_REFUNDED',
+            'COMPLETED'
         ) DEFAULT 'PENDING',
         payment_status ENUM ('PENDING', 'COMPLETED', 'FAILED', 'REFUNDED') DEFAULT 'PENDING',
         transaction_id VARCHAR(255),

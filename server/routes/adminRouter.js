@@ -14,6 +14,10 @@ adminRouter.get(
 
 adminRouter.get(API_ENDPOINTS.USERS, adminController.getAllUsers);
 adminRouter.post(API_ENDPOINTS.UPDATE_MENU, adminController.updateMenu);
+adminRouter.put(
+  API_ENDPOINTS.UPDATE_ORDER_STATUS,
+  adminController.updateOrderStatus
+);
 
 adminRouter.post(
   API_ENDPOINTS.UPLOAD_IMAGE,

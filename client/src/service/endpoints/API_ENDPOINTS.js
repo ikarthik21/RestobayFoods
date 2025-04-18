@@ -14,5 +14,6 @@ export const ENDPOINTS = {
   AllTableBookings: "/api/admin/table/bookings",
   getUsers: "/api/admin/users",
   updateMenu: "/api/admin/menu/update",
-  uploadImage: "/api/admin/upload/image"
+  uploadImage: "/api/admin/upload/image",
+  updateOrderStatus: "/api/admin/order/status"
 };

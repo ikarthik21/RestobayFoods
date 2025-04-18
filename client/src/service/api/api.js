@@ -177,7 +177,7 @@ class RestoService {
     }
   };
 
-  async uploadImage(formData) {
+  uploadImage = async (formData) => {
     try {
       const response = await restoClient.post(ENDPOINTS.uploadImage, formData, {
         headers: {
@@ -188,7 +188,19 @@ class RestoService {
     } catch (error) {
       throw error.response ? error.response.data : error;
     }
-  }
+  };
+
+  updateOrderStatus = async (data) => {
+    try {
+      const response = await restoClient.put(
+        ENDPOINTS.updateOrderStatus,
+        data
+      );
+      return response.data;
+    } catch (err) {
+      return err.response?.data || { message: err.message };
+    }
+  };
 }
 
 const restoApiInstance = new RestoService();

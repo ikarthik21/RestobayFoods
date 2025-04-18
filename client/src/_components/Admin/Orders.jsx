@@ -8,21 +8,60 @@ import {
   MoreVertical,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  DollarSign,
+  RefreshCw,
+  XCircle,
+  Slash
 } from "lucide-react";
 import PropTypes from "prop-types";
+import { formatDate } from "../../utils/ClientUtils";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Orders = () => {
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "created_at",
     direction: "desc"
   });
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["resto-admin-orders"],
     queryFn: restoApiInstance.getAllFoodOrders
   });
+
+  const toggleDropdown = (orderId) => {
+    setActiveDropdown(activeDropdown === orderId ? null : orderId);
+  };
+
+  const handleActionClick = async (orderId, newStatus) => {
+    setActiveDropdown(null);
+
+    try {
+      await restoApiInstance.updateOrderStatus({
+        orderId,
+        newStatus,
+        component: "order"
+      });
+
+      queryClient.invalidateQueries(["resto-admin-orders"]);
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+    }
+  };
+
+  const handleClickOutside = (e) => {
+    if (!e.target.closest(".actions-dropdown")) {
+      setActiveDropdown(null);
+    }
+  };
+
+  // Add event listener for closing dropdown when clicking outside
+  if (typeof window !== "undefined") {
+    window.addEventListener("click", handleClickOutside);
+  }
 
   if (isLoading) {
     return (
@@ -89,49 +128,66 @@ const Orders = () => {
     );
   };
 
-  // Format date to a friendly format
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    }).format(date);
-  };
-
   // Status badge component
   const StatusBadge = ({ status }) => {
     const statusConfig = {
-      COMPLETED: {
-        icon: <CheckCircle size={16} className="mr-1" />,
-        className: "bg-green-100 text-green-800"
+      PENDING: {
+        icon: <Clock size={16} className="mr-1" />,
+        className: "bg-yellow-100 text-yellow-800"
+      },
+      PAYMENT_PENDING: {
+        icon: <DollarSign size={16} className="mr-1" />,
+        className: "bg-blue-100 text-blue-800"
+      },
+      PAYMENT_FAILED: {
+        icon: <XCircle size={16} className="mr-1" />,
+        className: "bg-red-100 text-red-800"
       },
       PROCESSING: {
         icon: <Clock size={16} className="mr-1" />,
         className: "bg-blue-100 text-blue-800"
       },
+      COMPLETED: {
+        icon: <CheckCircle size={16} className="mr-1" />,
+        className: "bg-green-100 text-green-800"
+      },
       CANCELLED: {
         icon: <AlertCircle size={16} className="mr-1" />,
         className: "bg-red-100 text-red-800"
+      },
+      REFUNDED: {
+        icon: <RefreshCw size={16} className="mr-1" />,
+        className: "bg-purple-100 text-purple-800"
+      },
+      PARTIALLY_REFUNDED: {
+        icon: <Slash size={16} className="mr-1" />,
+        className: "bg-purple-100 text-purple-800"
       }
     };
 
-    const config = statusConfig[status] || statusConfig.PROCESSING;
+    const config = statusConfig[status] || statusConfig.PENDING;
 
     return (
       <span
         className={`flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.className}`}
       >
         {config.icon}
-        {status}
+        {status.replace("_", " ")}
       </span>
     );
   };
 
   StatusBadge.propTypes = {
-    status: PropTypes.oneOf(["COMPLETED", "PROCESSING", "CANCELLED"]).isRequired
+    status: PropTypes.oneOf([
+      "PENDING",
+      "PAYMENT_PENDING",
+      "PAYMENT_FAILED",
+      "PROCESSING",
+      "COMPLETED",
+      "CANCELLED",
+      "REFUNDED",
+      "PARTIALLY_REFUNDED"
+    ]).isRequired
   };
 
   return (
@@ -244,10 +300,147 @@ const Orders = () => {
                       {formatDate(order.created_at)}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100">
-                      <MoreVertical size={18} />
-                    </button>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative">
+                    <div className="actions-dropdown">
+                      <button
+                        className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-100"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDropdown(order.id);
+                        }}
+                      >
+                        <MoreVertical size={18} />
+                      </button>
+
+                      {activeDropdown === order.id && (
+                        <div className="absolute right-0 mt-2 w-60 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                          <div className="py-1">
+                            {order.status !== "PENDING" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "PENDING")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <Clock
+                                  size={16}
+                                  className="mr-2 text-yellow-500"
+                                />
+                                Mark as Pending
+                              </button>
+                            )}
+
+                            {order.status !== "PAYMENT_PENDING" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "PAYMENT_PENDING")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <DollarSign
+                                  size={16}
+                                  className="mr-2 text-blue-500"
+                                />
+                                Mark as Payment Pending
+                              </button>
+                            )}
+
+                            {order.status !== "PAYMENT_FAILED" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "PAYMENT_FAILED")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <XCircle
+                                  size={16}
+                                  className="mr-2 text-red-500"
+                                />
+                                Mark as Payment Failed
+                              </button>
+                            )}
+
+                            {order.status !== "PROCESSING" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "PROCESSING")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <Clock
+                                  size={16}
+                                  className="mr-2 text-blue-500"
+                                />
+                                Mark as Processing
+                              </button>
+                            )}
+
+                            {order.status !== "COMPLETED" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "COMPLETED")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <CheckCircle
+                                  size={16}
+                                  className="mr-2 text-green-500"
+                                />
+                                Mark as Completed
+                              </button>
+                            )}
+
+                            {order.status !== "CANCELLED" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "CANCELLED")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <AlertCircle
+                                  size={16}
+                                  className="mr-2 text-red-500"
+                                />
+                                Cancel Order
+                              </button>
+                            )}
+
+                            {order.status !== "REFUNDED" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(order.id, "REFUNDED")
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <RefreshCw
+                                  size={16}
+                                  className="mr-2 text-purple-500"
+                                />
+                                Mark as Refunded
+                              </button>
+                            )}
+
+                            {order.status !== "PARTIALLY_REFUNDED" && (
+                              <button
+                                onClick={() =>
+                                  handleActionClick(
+                                    order.id,
+                                    "PARTIALLY_REFUNDED"
+                                  )
+                                }
+                                className="flex items-center w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              >
+                                <Slash
+                                  size={16}
+                                  className="mr-2 text-purple-500"
+                                />
+                                Mark as Partially Refunded
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))

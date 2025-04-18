@@ -13,7 +13,8 @@ const API_ENDPOINTS = {
   CHECK_TABLE_AVAILABILITY: "/tables/check",
   USERS: "/users",
   UPDATE_MENU: "/menu/update",
-  UPLOAD_IMAGE: "/upload/image"
+  UPLOAD_IMAGE: "/upload/image",
+  UPDATE_ORDER_STATUS: "/order/status"
 };
 
 export default API_ENDPOINTS;

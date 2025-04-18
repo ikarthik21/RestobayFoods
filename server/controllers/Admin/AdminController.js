@@ -204,6 +204,46 @@ class AdminController {
       });
     }
   };
+
+  updateOrderStatus = async (req, res) => {
+    const { orderId, newStatus, component } = req.body;
+
+    try {
+      if (!orderId || !newStatus || !component) {
+        return res.status(400).json({
+          type: "error",
+          message: "Please provide all required fields."
+        });
+      }
+
+      switch (component) {
+        case "order":
+          await pool.query("UPDATE orders SET status = ? WHERE id = ?", [
+            newStatus,
+            orderId
+          ]);
+          return res.status(200).json({
+            type: "success",
+            message: "Order status updated successfully"
+          });
+        case "table_booking":
+          await pool.query(
+            "UPDATE table_bookings SET status = ? WHERE id = ?",
+            [newStatus, orderId]
+          );
+          return res.status(200).json({
+            type: "success",
+            message: "Table booking status updated successfully"
+          });
+      }
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      return res.status(500).json({
+        type: "error",
+        message: "Internal Server Error"
+      });
+    }
+  };
 }
 
 const adminController = new AdminController();
