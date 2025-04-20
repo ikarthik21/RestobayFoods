@@ -20,13 +20,13 @@ const Home = () => {
           </div>
 
           <div className="ml-0 md:ml-12 flex flex-col items-center md:items-end justify-end mt-4">
-            <h2 className="main-head-1 text-center md:text-right">
+            <h2 className="main-head-1 text-center md:text-right text-[#3f3f3f]">
               Welcome to Restobay
             </h2>
 
             {!showOptions ? (
               <motion.button
-                className="rounded-md p-2 w-3/4 md:w-full bg-[#ef5644] text-white cursor-pointer kanit-500 tracking-wider transition transform hover:scale-105"
+                className="rounded-md p-1.5 w-3/4 md:w-full bg-[#ef5644] text-white cursor-pointer kanit-500 tracking-wider transition transform hover:scale-105"
                 onClick={() => setShowOptions(true)}
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}

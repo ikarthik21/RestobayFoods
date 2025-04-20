@@ -153,231 +153,384 @@ VALUES
     ('E2', 4, 'Patio', 'active'),
     ('E3', 6, 'Patio', 'maintenance');
 
--- Sample data for table_bookings
+-- Menu Items  
 INSERT INTO
-    `table_bookings` (
-        `table_id`,
-        `booking_date`,
-        `start_time`,
-        `end_time`,
-        `number_of_people`,
-        `user_id`,
-        `status`
+    menu (
+        id,
+        name,
+        description,
+        price,
+        category,
+        image_url,
+        available
     )
 VALUES
     (
         1,
-        '2025-04-01',
-        '18:00:00',
-        '20:00:00',
+        'Paneer Butter Masala',
+        'Cottage cheese cubes in a rich butter tomato gravy.',
+        280.00,
+        'North Indian Curries',
+        'https://example.com/paneer_butter_masala.jpg',
+        0
+    ),
+    (
         2,
-        1,
-        'confirmed'
+        'Dal Makhani',
+        'Slow-cooked black lentils in a creamy tomato sauce.',
+        250.00,
+        'North Indian Curries',
+        'https://example.com/dal_makhani.jpg',
+        1
     ),
     (
         3,
-        '2025-04-01',
-        '19:00:00',
-        '21:00:00',
+        'Shahi Paneer',
+        'Paneer in a creamy cashew and tomato gravy.',
+        290.00,
+        'North Indian Curries',
+        'https://example.com/shahi_paneer.jpg',
+        1
+    ),
+    (
         4,
-        4,
-        'confirmed'
+        'Kadhai Paneer',
+        'Paneer cooked with bell peppers in a spicy tomato gravy.',
+        260.00,
+        'North Indian Curries',
+        'https://example.com/kadhai_paneer.jpg',
+        1
     ),
     (
         5,
-        '2025-04-01',
-        '20:00:00',
-        '22:00:00',
-        4,
+        'Rajma Masala',
+        'Red kidney beans in a spiced tomato curry.',
+        220.00,
+        'North Indian Curries',
+        'https://example.com/rajma_masala.jpg',
+        1
+    ),
+    (
+        6,
+        'Malai Kofta',
+        'Deep-fried paneer dumplings in a creamy gravy.',
+        280.00,
+        'North Indian Curries',
+        'https://example.com/malai_kofta.jpg',
+        1
+    ),
+    (
         7,
-        'confirmed'
+        'Dum Aloo',
+        'Baby potatoes cooked in a rich yogurt-based curry.',
+        200.00,
+        'North Indian Curries',
+        'https://example.com/dum_aloo.jpg',
+        1
     ),
     (
         8,
-        '2025-04-01',
-        '19:30:00',
-        '21:30:00',
-        8,
-        10,
-        'confirmed'
+        'Masala Dosa',
+        'Crispy rice crepe filled with spiced mashed potatoes.',
+        120.00,
+        'South Indian',
+        'https://example.com/masala_dosa.jpg',
+        1
     ),
     (
         9,
-        '2025-04-02',
-        '17:00:00',
-        '19:00:00',
+        'Idli Sambar',
+        'Steamed rice cakes served with lentil soup.',
+        100.00,
+        'South Indian',
+        'https://example.com/idli_sambar.jpg',
+        1
+    ),
+    (
         10,
+        'Medu Vada',
+        'Crispy urad dal fritters served with chutney.',
+        110.00,
+        'South Indian',
+        'https://example.com/medu_vada.jpg',
+        0
+    ),
+    (
+        11,
+        'Tomato Rasam',
+        'Spicy tamarind-based tomato soup.',
+        90.00,
+        'South Indian',
+        'https://example.com/tomato_rasam.jpg',
+        1
+    ),
+    (
+        12,
+        'Vegetable Uttapam',
+        'Thick pancake topped with veggies.',
+        130.00,
+        'South Indian',
+        'https://example.com/vegetable_uttapam.jpg',
+        1
+    ),
+    (
         13,
-        'confirmed'
+        'Curd Rice',
+        'South Indian style creamy yogurt rice.',
+        150.00,
+        'South Indian',
+        'https://example.com/curd_rice.jpg',
+        1
     ),
     (
-        10,
-        '2025-04-02',
-        '19:30:00',
-        '22:30:00',
-        12,
-        16,
-        'confirmed'
-    ),
-    (
-        2,
-        '2025-04-02',
-        '18:00:00',
-        '20:00:00',
-        2,
-        19,
-        'confirmed'
-    ),
-    (
-        4,
-        '2025-04-02',
-        '18:30:00',
-        '20:30:00',
-        4,
-        22,
-        'confirmed'
-    ),
-    (
-        6,
-        '2025-04-03',
-        '19:00:00',
-        '21:00:00',
-        6,
-        5,
-        'confirmed'
-    ),
-    (
-        11,
-        '2025-04-03',
-        '18:00:00',
-        '20:00:00',
-        4,
-        8,
-        'confirmed'
-    ),
-    (
-        12,
-        '2025-04-03',
-        '20:00:00',
-        '22:00:00',
-        4,
-        11,
-        'confirmed'
-    ),
-    (
-        7,
-        '2025-04-03',
-        '19:30:00',
-        '21:30:00',
-        6,
         14,
-        'confirmed'
+        'Lemon Rice',
+        'Tangy rice flavored with lemon juice.',
+        160.00,
+        'South Indian',
+        'https://example.com/lemon_rice.jpg',
+        1
     ),
     (
-        1,
-        '2025-04-04',
-        '17:00:00',
-        '19:00:00',
-        2,
-        17,
-        'confirmed'
-    ),
-    (
-        3,
-        '2025-04-04',
-        '19:00:00',
-        '21:00:00',
-        4,
-        20,
-        'confirmed'
-    ),
-    (
-        5,
-        '2025-04-04',
-        '20:30:00',
-        '22:30:00',
-        4,
-        3,
-        'confirmed'
-    ),
-    (
-        9,
-        '2025-04-05',
-        '18:00:00',
-        '21:00:00',
-        10,
-        6,
-        'confirmed'
-    ),
-    (
-        11,
-        '2025-04-05',
-        '19:00:00',
-        '21:00:00',
-        4,
-        9,
-        'confirmed'
-    ),
-    (
-        2,
-        '2025-04-05',
-        '17:30:00',
-        '19:30:00',
-        2,
-        12,
-        'confirmed'
-    ),
-    (
-        4,
-        '2025-04-05',
-        '20:00:00',
-        '22:00:00',
-        4,
         15,
-        'confirmed'
+        'Sambar Rice',
+        'Rice mixed with spicy lentil soup.',
+        180.00,
+        'South Indian',
+        'https://example.com/sambar_rice.jpg',
+        1
     ),
     (
-        6,
-        '2025-04-06',
-        '18:00:00',
-        '20:00:00',
-        6,
-        18,
-        'confirmed'
+        16,
+        'Vegetable Biryani',
+        'Fragrant rice cooked with vegetables.',
+        220.00,
+        'Rice & Biryani',
+        'https://example.com/vegetable_biryani.jpg',
+        1
     ),
     (
-        10,
-        '2025-04-06',
-        '19:00:00',
-        '22:00:00',
-        12,
+        17,
+        'Paneer Biryani',
+        'Rice cooked with paneer and aromatic spices.',
+        250.00,
+        'Rice & Biryani',
+        'https://example.com/paneer_biryani.jpg',
+        1
+    ),
+    (
+        19,
+        'Kashmiri Pulao',
+        'Sweet rice cooked with nuts and saffron.',
+        260.00,
+        'Rice & Biryani',
+        'https://example.com/kashmiri_pulao.jpg',
+        1
+    ),
+    (
+        20,
+        'Jeera Rice',
+        'Cumin-flavored basmati rice.',
+        140.00,
+        'Rice & Biryani',
+        'https://example.com/jeera_rice.jpg',
+        0
+    ),
+    (
         21,
-        'confirmed'
+        'Tomato Rice',
+        'Rice cooked with tomatoes and spices.',
+        170.00,
+        'Rice & Biryani',
+        'https://example.com/tomato_rice.jpg',
+        1
     ),
     (
-        1,
-        '2025-04-01',
-        '12:00:00',
-        '14:00:00',
-        2,
-        5,
-        'completed'
+        22,
+        'Pav Bhaji',
+        'Spiced mashed vegetables served with buttered pav.',
+        150.00,
+        'Street Food',
+        'https://example.com/pav_bhaji.jpg',
+        1
     ),
     (
-        2,
-        '2025-04-01',
-        '13:00:00',
-        '15:00:00',
-        2,
-        9,
-        'completed'
+        23,
+        'Vada Pav',
+        'Spicy potato fritter sandwiched in a bun.',
+        60.00,
+        'Street Food',
+        'https://example.com/vada_pav.jpg',
+        1
     ),
     (
-        3,
-        '2025-03-31',
-        '19:00:00',
-        '21:00:00',
-        4,
-        1,
-        'completed'
+        24,
+        'Dhokla',
+        'Steamed fermented gram flour cake.',
+        90.00,
+        'Street Food',
+        'https://example.com/dhokla.jpg',
+        1
+    ),
+    (
+        25,
+        'Chole Bhature',
+        'Spicy chickpeas served with deep-fried bhature.',
+        200.00,
+        'Street Food',
+        'https://example.com/chole_bhature.jpg',
+        1
+    ),
+    (
+        26,
+        'Aloo Tikki',
+        'Crispy fried potato patties served with chutneys.',
+        80.00,
+        'Street Food',
+        'https://example.com/aloo_tikki.jpg',
+        1
+    ),
+    (
+        27,
+        'Bhel Puri',
+        'Crispy puffed rice with tangy tamarind chutney.',
+        70.00,
+        'Street Food',
+        'https://example.com/bhel_puri.jpg',
+        1
+    ),
+    (
+        28,
+        'Butter Naan',
+        'Soft leavened bread with butter.',
+        40.00,
+        'Indian Breads',
+        'https://example.com/butter_naan.jpg',
+        1
+    ),
+    (
+        29,
+        'Tandoori Roti',
+        'Whole wheat bread cooked in a tandoor.',
+        30.00,
+        'Indian Breads',
+        'https://example.com/tandoori_roti.jpg',
+        1
+    ),
+    (
+        30,
+        'Missi Roti',
+        'Spiced gram flour flatbread.',
+        35.00,
+        'Indian Breads',
+        'https://example.com/missi_roti.jpg',
+        1
+    ),
+    (
+        31,
+        'Aloo Paratha',
+        'Stuffed wheat flatbread with spiced potatoes.',
+        80.00,
+        'Indian Breads',
+        'https://example.com/aloo_paratha.jpg',
+        1
+    ),
+    (
+        32,
+        'Gulab Jamun',
+        'Deep-fried milk dumplings soaked in sugar syrup.',
+        120.00,
+        'Desserts',
+        'https://example.com/gulab_jamun.jpg',
+        1
+    ),
+    (
+        33,
+        'Rasgulla',
+        'Spongy cheese balls soaked in light sugar syrup.',
+        110.00,
+        'Desserts',
+        'https://example.com/rasgulla.jpg',
+        1
+    ),
+    (
+        34,
+        'Jalebi',
+        'Crispy deep-fried spirals soaked in sugar syrup.',
+        100.00,
+        'Desserts',
+        'https://example.com/jalebi.jpg',
+        1
+    ),
+    (
+        35,
+        'Kheer',
+        'Slow-cooked rice pudding with milk and dry fruits.',
+        140.00,
+        'Desserts',
+        'https://example.com/kheer.jpg',
+        1
+    ),
+    (
+        36,
+        'Mysore Pak',
+        'Gram flour and ghee-based soft fudge.',
+        150.00,
+        'Desserts',
+        'https://example.com/mysore_pak.jpg',
+        1
+    ),
+    (
+        37,
+        'Rabri',
+        'Thick sweetened milk topped with nuts.',
+        160.00,
+        'Desserts',
+        'https://example.com/rabri.jpg',
+        1
+    ),
+    (
+        38,
+        'Masala Chai',
+        'Spiced Indian tea with milk.',
+        50.00,
+        'Beverages',
+        'https://example.com/masala_chai.jpg',
+        1
+    ),
+    (
+        39,
+        'Lassi',
+        'Thick sweet yogurt-based drink.',
+        90.00,
+        'Beverages',
+        'https://example.com/lassi.jpg',
+        1
+    ),
+    (
+        40,
+        'Jaljeera',
+        'Tangy spiced cumin water.',
+        60.00,
+        'Beverages',
+        'https://example.com/jaljeera.jpg',
+        1
+    ),
+    (
+        41,
+        'Aam Panna',
+        'Raw mango cooler with mint and spices.',
+        80.00,
+        'Desserts',
+        'https://example.com/aam_panna.jpg',
+        0
+    ),
+    (
+        42,
+        'Badam Milk',
+        'Almond-flavored sweetened milk.',
+        120.00,
+        'Beverages',
+        'https://example.com/badam_milk.jpg',
+        1
     );
