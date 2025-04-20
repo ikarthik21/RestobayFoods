@@ -3,6 +3,7 @@ import { Calendar, Clock, Users, DollarSign, Table } from "lucide-react";
 import restoApiInstance from "../../service/api/api";
 import BlockWrapper from "@/_components/Wrappers/BlockWrapper";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 const MyTableBookings = () => {
   const { data, isLoading, isError } = useQuery({
@@ -53,9 +54,11 @@ const MyTableBookings = () => {
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <Table className="mx-auto text-gray-400 mb-4" size={48} />
           <p className="text-gray-600 font-medium">No bookings found</p>
-          <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
-            Book a Table
-          </button>
+          <Link to="/table">
+            <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+              Book a Table
+            </button>
+          </Link>
         </div>
       )}
 
