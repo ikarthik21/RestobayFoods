@@ -5,6 +5,7 @@ const Login = React.lazy(() => import("@/pages/Auth/Login"));
 const Menu = React.lazy(() => import("@/pages/Menu/Menu"));
 const Orders = React.lazy(() => import("../pages/Orders/Orders"));
 const Tables = React.lazy(() => import("../pages/Tables/Tables"));
+const VerifyMail = React.lazy(() => import("../pages/Auth/VerifyMail"));
 const MyTableBookings = React.lazy(() =>
   import("../pages/Tables/MyTableBookings")
 );
@@ -44,6 +45,14 @@ const routesConfig = [
           <Menu />
         </React.Suspense>
       </PrivateRoute>
+    )
+  },
+  {
+    path: "/verify-email",
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <VerifyMail />
+      </React.Suspense>
     )
   },
   {

@@ -6,8 +6,8 @@ const SideBar = () => {
 
   const navItems = [
     { path: "/home", icon: Home, label: "Home" },
-    { path: "/menu", icon: Utensils, label: "Menu" },
     { path: "/table", icon: Table, label: "Book Table" },
+    { path: "/menu", icon: Utensils, label: "Menu" },
     { path: "/bookings/table", icon: Clock, label: "Table Bookings" },
     { path: "/orders", icon: Pizza, label: "Order History" }
   ];

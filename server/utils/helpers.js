@@ -15,7 +15,7 @@ export const sendVerificationEmail = async (userId, name, email) => {
     // Verification Link
     const verificationLink = `${
       process.env.FRONTEND_URL
-    }/api/verify-email?token=${encodeURIComponent(token)}`;
+    }/verify-email?token=${encodeURIComponent(token)}`;
 
     // Email Content
     const mailOptions = {

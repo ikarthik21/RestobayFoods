@@ -38,6 +38,41 @@ class RestoService {
     }
   };
 
+  verifyEmail = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.verifyEmail, data);
+      return response.data;
+    } catch (err) {
+      return {
+        type: "error",
+        message:
+          err.response?.data?.errors?.[0]?.message ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      };
+    }
+  };
+
+  resendVerificationMail = async (data) => {
+    try {
+      const response = await restoClient.post(
+        ENDPOINTS.resendVerificationMail,
+        data
+      );
+      return response.data;
+    } catch (err) {
+      return {
+        type: "error",
+        message:
+          err.response?.data?.errors?.[0]?.message ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      };
+    }
+  };
+
   getMenu = async () => {
     try {
       const response = await restoClient.get(ENDPOINTS.menu);
