@@ -10,7 +10,7 @@ export const userSchema = z.object({
   phone: z
     .string()
     .trim()
-    .regex(/^\+?[1-9]\d{9,14}$/, "Invalid phone number"),
+    .regex(/^[1-9]\d{9}$/, "Invalid Phone Number"),
   password: z
     .string()
     .trim()
