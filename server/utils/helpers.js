@@ -5,31 +5,13 @@ import dayjs from "dayjs";
 import multer from "multer";
 import path from "path";
 
-export const sendVerificationEmail = async (userId, name, email) => {
+export const sendVerificationEmail = async (
+  userId,
+  name,
+  email,
+  mailOptions
+) => {
   try {
-    // Generate Verification Token
-    const token = jwt.sign({ id: userId, email }, process.env.JWT_SECRET, {
-      expiresIn: "1h"
-    });
-
-    // Verification Link
-    const verificationLink = `${
-      process.env.FRONTEND_URL
-    }/verify-email?token=${encodeURIComponent(token)}`;
-
-    // Email Content
-    const mailOptions = {
-      from: process.env.MAILER_USER,
-      to: email,
-      subject: "Welcome to Restobay - Verify Your Email",
-      html: `
-        <p>Hello ${name},</p>
-        <p>Please click the link below to verify your email:</p>
-        <a href="${verificationLink}">Verify Email</a>
-        <p>This link will expire in 1 hour.</p>
-      `
-    };
-
     const transporter = nodemailer.createTransport({
       service: "Gmail",
       auth: {

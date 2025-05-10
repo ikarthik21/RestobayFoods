@@ -73,6 +73,57 @@ class RestoService {
     }
   };
 
+  validateResetToken = async (data) => {
+    try {
+      const response = await restoClient.post(
+        ENDPOINTS.validateResetToken,
+        data
+      );
+      return response.data;
+    } catch (err) {
+      return {
+        type: "error",
+        message:
+          err.response?.data?.errors?.[0]?.message ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      };
+    }
+  };
+
+  forgotPassword = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.forgotPassword, data);
+      return response.data;
+    } catch (err) {
+      return {
+        type: "error",
+        message:
+          err.response?.data?.errors?.[0]?.message ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      };
+    }
+  };
+
+  resetPassword = async (data) => {
+    try {
+      const response = await restoClient.post(ENDPOINTS.resetPassword, data);
+      return response.data;
+    } catch (err) {
+      return {
+        type: "error",
+        message:
+          err.response?.data?.errors?.[0]?.message ||
+          err.response?.data?.message ||
+          err.message ||
+          "Something went wrong. Please try again."
+      };
+    }
+  };
+
   getMenu = async () => {
     try {
       const response = await restoClient.get(ENDPOINTS.menu);
@@ -227,10 +278,7 @@ class RestoService {
 
   updateOrderStatus = async (data) => {
     try {
-      const response = await restoClient.put(
-        ENDPOINTS.updateOrderStatus,
-        data
-      );
+      const response = await restoClient.put(ENDPOINTS.updateOrderStatus, data);
       return response.data;
     } catch (err) {
       return err.response?.data || { message: err.message };
