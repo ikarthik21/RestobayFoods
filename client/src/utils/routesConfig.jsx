@@ -13,6 +13,7 @@ const MyTableBookings = React.lazy(() =>
 );
 const Admin = React.lazy(() => import("../pages/Admin/Admin"));
 import PrivateRoute from "@/utils/PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 const routesConfig = [
   {
@@ -34,9 +35,11 @@ const routesConfig = [
   {
     path: "/login",
     element: (
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <Login />
-      </React.Suspense>
+      <PublicRoute>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Login />
+        </React.Suspense>
+      </PublicRoute>
     )
   },
   {

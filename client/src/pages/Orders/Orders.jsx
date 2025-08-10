@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Package, DollarSign, ShoppingBag } from "lucide-react";
 import restoApiInstance from "../../service/api/api";
+import { useNavigate } from "react-router-dom";
 import BlockWrapper from "@/_components/Wrappers/BlockWrapper";
 
 const Orders = () => {
@@ -8,6 +9,8 @@ const Orders = () => {
     queryKey: ["resto-orders"],
     queryFn: restoApiInstance.getOrders
   });
+
+  const navigate = useNavigate();
 
   if (isLoading) {
     return (
@@ -52,7 +55,9 @@ const Orders = () => {
         <div className="text-center py-12 bg-gray-50 rounded-lg">
           <ShoppingBag className="mx-auto text-gray-400 mb-4" size={48} />
           <p className="text-gray-600 font-medium">No orders found</p>
-          <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors">
+          <button
+            className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+            onClick={() => navigate("/menu")}          >
             Browse Menu
           </button>
         </div>

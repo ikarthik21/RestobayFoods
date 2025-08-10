@@ -6,7 +6,7 @@ import Modal from "./_components/Modals/Modal.jsx";
 
 function App() {
   return (
-    <div>
+    <>
       <Router>
         <SideBar />
         <NavBar />
@@ -23,7 +23,7 @@ function App() {
           ))}
         </Routes>
       </Router>
-    </div>
+    </>
   );
 }
 
