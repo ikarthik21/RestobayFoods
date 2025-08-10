@@ -71,10 +71,37 @@ class UserAuthController {
       [name, email, phone, hashedPassword]
     );
 
+    // Generate Verification Token
+    const token = jwt.sign(
+      { id: result.insertId, email },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h"
+      }
+    );
+
+    const verificationLink = `${
+      process.env.FRONTEND_URL
+    }/verify-email?token=${encodeURIComponent(token)}`;
+
+    // Email Content
+    const mailOptions = {
+      from: process.env.MAILER_USER,
+      to: email,
+      subject: "Welcome to Restobay - Verify Your Email",
+      html: `
+            <p>Hello ${users[0].name},</p>
+            <p>Please click the link below to verify your mail:</p>
+            <a href="${verificationLink}">Verify Email</a>
+            <p>This link will expire in 1 hour.</p>
+          `
+    };
+
     const mailSuccess = await sendVerificationEmail(
       result.insertId,
       name,
-      email
+      email,
+      mailOptions
     );
 
     if (!mailSuccess) {
@@ -178,7 +205,38 @@ class UserAuthController {
         });
       }
 
-      const mailSuccess = await sendVerificationEmail(id, name, email);
+      // Generate Verification Token
+      const token = jwt.sign(
+        { id: result.insertId, email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h"
+        }
+      );
+
+      const verificationLink = `${
+        process.env.FRONTEND_URL
+      }/verify-email?token=${encodeURIComponent(token)}`;
+
+      // Email Content
+      const mailOptions = {
+        from: process.env.MAILER_USER,
+        to: email,
+        subject: "Welcome to Restobay - Verify Your Email",
+        html: `
+              <p>Hello ${users[0].name},</p>
+              <p>Please click the link below to verify your mail:</p>
+              <a href="${verificationLink}">Verify Email</a>
+              <p>This link will expire in 1 hour.</p>
+            `
+      };
+
+      const mailSuccess = await sendVerificationEmail(
+        id,
+        name,
+        email,
+        mailOptions
+      );
 
       if (!mailSuccess) {
         console.log("Verification email not successfull:", email);
@@ -197,6 +255,198 @@ class UserAuthController {
       return res.status(500).json({
         type: "error",
         message: "Error resending verification email"
+      });
+    }
+  }
+
+  async forgotPassword(req, res) {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({
+          type: "error",
+          message: "Please provide email"
+        });
+      }
+
+      const [users] = await pool.query("SELECT * FROM users WHERE email = ?", [
+        email
+      ]);
+
+      if (users.length === 0) {
+        return res.status(400).json({
+          type: "error",
+          message: "User not found. Please Register."
+        });
+      }
+
+      // Generate JWT Token
+      const token = jwt.sign(
+        { id: users[0].id, email: users[0].email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      const resetPasswordLink = `${
+        process.env.FRONTEND_URL
+      }/reset-password?token=${encodeURIComponent(token)}`;
+
+      // Email Content
+      const mailOptions = {
+        from: process.env.MAILER_USER,
+        to: email,
+        subject: "Restobay - Reset Password",
+        html: `
+              <p>Hello ${users[0].name},</p>
+              <p>Please click the link below to reset your Password:</p>
+              <a href="${resetPasswordLink}">Reset Password</a>
+              <p>This link will expire in 1 hour.</p>
+            `
+      };
+
+      const mailSuccess = await sendVerificationEmail(
+        users[0].id,
+        users[0].name,
+        email,
+        mailOptions
+      );
+
+      if (!mailSuccess) {
+        return res.status(500).json({
+          type: "error",
+          message: "Error sending reset password email"
+        });
+      }
+
+      res.status(200).json({
+        type: "success",
+        message:
+          "Reset password email sent successfully. Please check your email."
+      });
+    } catch (error) {
+      console.log("Error in forgot password:", error);
+      return res.status(500).json({
+        type: "error",
+        message: "Error sending reset password email"
+      });
+    }
+  }
+
+  async validateResetToken(req, res) {
+    try {
+      const { token } = req.body;
+
+      if (!token) {
+        return res.status(400).json({
+          type: "error",
+          message: "Please provide token"
+        });
+      }
+
+      // Verify JWT token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+
+      if (!userId) {
+        return res.status(400).json({
+          type: "error",
+          message: "Invalid token"
+        });
+      }
+
+      // Check if user exists
+      const [users] = await pool.query("SELECT * FROM users WHERE id = ?", [
+        userId
+      ]);
+
+      if (users.length === 0) {
+        return res.status(400).json({
+          type: "error",
+          message: "User not found"
+        });
+      }
+
+      res.status(200).json({
+        type: "success",
+        message: "Token is valid. You can reset your password."
+      });
+    } catch (error) {
+      console.log("Error in validate reset token:", error);
+      return res.status(500).json({
+        type: "error",
+        message: "Error validating reset token"
+      });
+    }
+  }
+
+  async resetPassword(req, res) {
+    try {
+      const { newPassword, token } = req.body;
+
+      if (!token) {
+        return res.status(400).json({
+          type: "error",
+          message: "Please provide token"
+        });
+      }
+      if (!newPassword) {
+        return res.status(400).json({
+          type: "error",
+          message: "Please provide new password"
+        });
+      }
+
+      // Verify JWT token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const userId = decoded.id;
+
+      if (!userId) {
+        return res.status(400).json({
+          type: "error",
+          message: "Invalid token"
+        });
+      }
+      // Check if user exists
+      const [users] = await pool.query("SELECT * FROM users WHERE id = ?", [
+        userId
+      ]);
+
+      if (users.length === 0) {
+        return res.status(400).json({
+          type: "error",
+          message: "User not found"
+        });
+      }
+      const user = users[0];
+      const isVerified = user.verified || null;
+
+      if (!isVerified) {
+        return res.status(400).json({
+          type: "error",
+          message: "Email not verified. Please verify your email."
+        });
+      }
+
+      // Hash new password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+      // Update user password
+      await pool.query("UPDATE users SET password = ? WHERE id = ?", [
+        hashedPassword,
+        userId
+      ]);
+
+      res.status(200).json({
+        type: "success",
+        message: "Password reset successfully. You can now log in."
+      });
+    } catch (error) {
+      console.log("Error in reset password:", error);
+      return res.status(500).json({
+        type: "error",
+        message: "Error resetting password"
       });
     }
   }

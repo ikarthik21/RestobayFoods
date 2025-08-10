@@ -7,6 +7,7 @@ import Toast from "@/_components/Toasts/Toast";
 import BlockWrapper from "@/_components/Wrappers/BlockWrapper";
 import Register from "./Register";
 import ResendMail from "./ResendMail";
+import ForgotPassword from "./ForgotPassword";
 import { useNavigate } from "react-router-dom";
 import LOGIN_IMG from "../../assets/images/login_img.jpg";
 
@@ -95,12 +96,12 @@ const Login = () => {
                     <label className="block text-sm font-medium text-gray-700">
                       Password
                     </label>
-                    <a
-                      href="#"
+                    <button
                       className="text-xs text-[#ef5644] hover:text-red-700"
+                      onClick={() => setshowDetails("forgotPassword")}
                     >
                       Forgot password?
-                    </a>
+                    </button>
                   </div>
                   <input
                     type="password"
@@ -173,6 +174,10 @@ const Login = () => {
       )}
       {showDetails === "resendMail" && (
         <ResendMail setshowDetails={setshowDetails} />
+      )}
+
+      {showDetails === "forgotPassword" && (
+        <ForgotPassword setshowDetails={setshowDetails} />
       )}
     </BlockWrapper>
   );

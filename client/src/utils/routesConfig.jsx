@@ -6,11 +6,14 @@ const Menu = React.lazy(() => import("@/pages/Menu/Menu"));
 const Orders = React.lazy(() => import("../pages/Orders/Orders"));
 const Tables = React.lazy(() => import("../pages/Tables/Tables"));
 const VerifyMail = React.lazy(() => import("../pages/Auth/VerifyMail"));
+const ResetPassword = React.lazy(() => import("../pages/Auth/ResetPassword"));
+
 const MyTableBookings = React.lazy(() =>
   import("../pages/Tables/MyTableBookings")
 );
 const Admin = React.lazy(() => import("../pages/Admin/Admin"));
 import PrivateRoute from "@/utils/PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 const routesConfig = [
   {
@@ -32,9 +35,11 @@ const routesConfig = [
   {
     path: "/login",
     element: (
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <Login />
-      </React.Suspense>
+      <PublicRoute>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Login />
+        </React.Suspense>
+      </PublicRoute>
     )
   },
   {
@@ -45,6 +50,14 @@ const routesConfig = [
           <Menu />
         </React.Suspense>
       </PrivateRoute>
+    )
+  },
+  {
+    path: "/reset-password",
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <ResetPassword />
+      </React.Suspense>
     )
   },
   {

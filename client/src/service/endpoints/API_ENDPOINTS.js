@@ -8,7 +8,10 @@ export const ENDPOINTS = {
   order: "/api/resto/order",
   tableOrder: "/api/resto/tables/order",
   verifyPayment: "/api/resto/payment/verify",
+  forgotPassword: "/api/auth/forgot-password",
   getOrders: "/api/resto/orders",
+  validateResetToken: "/api/auth/validate-reset-token",
+  resetPassword: "/api/auth/reset-password",
   getTableBookings: "/api/resto/table/bookings",
   checkTableAvailability: "/api/resto/tables/check",
   // For Admin

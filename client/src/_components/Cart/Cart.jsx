@@ -94,8 +94,10 @@ const Cart = () => {
           </div>
 
           {/* Total */}
-          <div className="flex justify-end p-2 mt-2 ">
-            <span className="font-bold text-lg">Total: Rs {totalPrice}</span>
+          <div className="flex justify-end items-center p-2 mt-2 ">
+            <span className="font-bold text-md">
+              Total: Rs <span className="text-[#ef5644] text-2xl">{totalPrice}</span>
+            </span>
           </div>
 
           {/* Checkout */}

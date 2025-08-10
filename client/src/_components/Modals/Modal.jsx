@@ -51,7 +51,7 @@ function Modal() {
     >
       <div className="z-50 h-full w-full flex items-center justify-center">
         <motion.div
-          className="bg-[#fff0df] relative rounded-md p-2"
+          className="bg-[#fff0df] relative rounded-md  border-6 border-[#ef5644] shadow-lg p-4"
           ref={localRef}
           initial={{ scale: 0.9 }}
           animate={{ scale: 1 }}
@@ -62,7 +62,7 @@ function Modal() {
             <div className="flex items-center justify-end mb-4">
               <div onClick={closeModal}>
                 <CancelIcon
-                  sx={{ color: "#ef5644", fontSize: "25px" }}
+                  sx={{ color: "#ef5644", fontSize: "35px" }}
                   cursor={"pointer"}
                 />
               </div>
