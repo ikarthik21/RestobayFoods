@@ -10,13 +10,13 @@ import useCartStore from "../../store/use-cart";
 const MenuItem = memo(({ item, addToCart, removeFromCart }) => (
   <div
     // eslint-disable-next-line react/prop-types
-    className={` ${!item.available ? "opacity-25 pointer-events-none ":""} bg-[#fde4c7] flex flex-col items-center rounded-xl  justify-center m-2 p-3 w-64 h-56`}
+    className={` ${!item.available ? "opacity-25 pointer-events-none ":""} bg-[#fde4c7] flex flex-col items-center rounded-xl  justify-center m-2 p-3 w-72 `}
     key={item.id}
   >
     <div className="overflow-hidden rounded-xl">
       <img
-        src="https://restobay.vercel.app/images/vt.jpg"
-        className="h-32 w-64 object-cover rounded-xl transition-transform hover:scale-105"
+        src={item.image_url}
+        className="h-44 w-64 object-cover rounded-xl transition-transform hover:scale-105"
         alt={item.name}
         loading="lazy"
       />
@@ -66,6 +66,7 @@ MenuItem.propTypes = {
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     category: PropTypes.string.isRequired,
+    image_url: PropTypes.string.isRequired,
     quantity: PropTypes.number
   }).isRequired,
   addToCart: PropTypes.func.isRequired,
@@ -149,7 +150,7 @@ const Menu = () => {
   return (
     <BlockWrapper>
       <MenuBar />
-      <div className="flex items-center flex-wrap mt-4">
+      <div className="flex items-center flex-wrap mt-4 justify-center">
         {filteredItems.map((item) => (
           <MenuItem
             key={item.id}

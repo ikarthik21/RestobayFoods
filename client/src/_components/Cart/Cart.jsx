@@ -9,7 +9,7 @@ const CartItem = memo(({ item, addToCart, removeFromCart }) => (
     {/* Item Info */}
     <div className="col-span-2 flex items-center">
       <img
-        src="https://restobay.vercel.app/images/vt.jpg"
+        src={item.image_url}
         className="h-12 w-12 object-cover rounded-xl transition-transform hover:scale-105"
         alt={item.name}
         loading="lazy"
@@ -50,6 +50,7 @@ CartItem.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
+    image_url: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     quantity: PropTypes.number.isRequired
   }).isRequired,
@@ -96,7 +97,8 @@ const Cart = () => {
           {/* Total */}
           <div className="flex justify-end items-center p-2 mt-2 ">
             <span className="font-bold text-md">
-              Total: Rs <span className="text-[#ef5644] text-2xl">{totalPrice}</span>
+              Total: Rs{" "}
+              <span className="text-[#ef5644] text-2xl">{totalPrice}</span>
             </span>
           </div>
 

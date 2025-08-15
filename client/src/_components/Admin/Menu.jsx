@@ -272,7 +272,7 @@ const Menu = () => {
                       <div className="h-12 w-12 rounded-md bg-gray-200 flex-shrink-0 overflow-hidden">
                         {item.image_url ? (
                           <img
-                            src={"https://restobay.vercel.app/images/vt.jpg"}
+                            src={item.image_url}
                             alt={item.name}
                             className="h-full w-full object-cover"
                           />
