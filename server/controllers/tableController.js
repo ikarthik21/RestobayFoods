@@ -5,7 +5,7 @@ class TableContoller {
   async checkTableAvailability(req, res) {
     try {
       const { bookingDate, startTime, endTime, partySize } = req.body;
-
+      const now = dayjs();
       if (!bookingDate || !partySize || !startTime || !endTime) {
         return res.status(400).json({
           type: "error",
@@ -14,51 +14,57 @@ class TableContoller {
         });
       }
 
-      // check for correct date
-      if (dayjs(bookingDate).isBefore(dayjs(), "day")) {
+      const bookingDay = dayjs(bookingDate);
+      if (bookingDay.isBefore(now, "day")) {
         return res.status(400).json({
           type: "error",
           message: "Cannot book a table for a past date"
         });
       }
 
-      console.log(startTime);
-
-      // check for valid time range
-      if (dayjs(startTime, "HH:mm").isAfter(dayjs(endTime, "HH:mm"))) {
+      const start = dayjs(startTime, "HH:mm");
+      const end = dayjs(endTime, "HH:mm");
+      if (start.isAfter(end)) {
         return res.status(400).json({
           type: "error",
           message: "Start time must be before end time"
         });
       }
 
+      // If booking is for today, check that start time is not in the past
+      if (bookingDay.isSame(now, "day")) {
+        const startDateTime = dayjs(
+          `${now.format("YYYY-MM-DD")} ${startTime}`,
+          "YYYY-MM-DD HH:mm"
+        );
+        if (startDateTime.isBefore(now)) {
+          return res.status(400).json({
+            type: "error",
+            message: "Start time must be later than the current time"
+          });
+        }
+      }
+
       // Query to find available tables
       const query = `
-      SELECT t.id, t.table_number, t.capacity, t.location
-      FROM tables t
-      WHERE t.status = 'active'
-      AND t.capacity >= ?
-      AND t.id NOT IN (
-        SELECT b.table_id 
-        FROM table_bookings b 
-        WHERE b.booking_date = ?
-        AND b.status = 'confirmed'
-        AND (
-          /* Case 1: Existing booking overlaps with start time */
-          (b.start_time <= ? AND b.end_time > ?) OR
-          
-          /* Case 2: Existing booking overlaps with end time */
-          (b.start_time < ? AND b.end_time >= ?) OR
-          
-          /* Case 3: Existing booking is contained within requested time */
-          (b.start_time >= ? AND b.end_time <= ?) OR
-          
-          /* Case 4: Requested time is contained within existing booking */
-          (b.start_time <= ? AND b.end_time >= ?)
+        SELECT t.id, t.table_number, t.capacity, t.location
+        FROM tables t
+        WHERE t.status = 'active'
+        AND t.capacity >= ?
+        AND t.id NOT IN (
+          SELECT b.table_id 
+          FROM table_bookings b 
+          WHERE b.booking_date = ?
+          AND b.status = 'confirmed'
+          AND (
+            (b.start_time <= ? AND b.end_time > ?) OR
+            (b.start_time < ? AND b.end_time >= ?) OR
+            (b.start_time >= ? AND b.end_time <= ?) OR
+            (b.start_time <= ? AND b.end_time >= ?)
+          )
         )
-      )
-      ORDER BY t.capacity ASC;
-    `;
+        ORDER BY t.capacity ASC;
+      `;
 
       const [tables] = await pool.execute(query, [
         parseInt(partySize),
@@ -75,7 +81,7 @@ class TableContoller {
 
       return res.status(200).json({
         type: "success",
-        tables: tables
+        tables
       });
     } catch (error) {
       console.error("Error checking table availability:", error);

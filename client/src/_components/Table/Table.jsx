@@ -30,6 +30,8 @@ const Table = () => {
       startTime: dayjs(startTime).format("HH:mm"),
       endTime: dayjs(endTime).format("HH:mm")
     });
+    setIsPaymentProcessing(false);
+    useTableStore.getState().resetTable();  
   };
 
   if (isLoading) {
