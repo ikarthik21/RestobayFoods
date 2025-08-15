@@ -14,6 +14,24 @@ class TableContoller {
         });
       }
 
+      // check for correct date
+      if (dayjs(bookingDate).isBefore(dayjs(), "day")) {
+        return res.status(400).json({
+          type: "error",
+          message: "Cannot book a table for a past date"
+        });
+      }
+
+      console.log(startTime);
+
+      // check for valid time range
+      if (dayjs(startTime, "HH:mm").isAfter(dayjs(endTime, "HH:mm"))) {
+        return res.status(400).json({
+          type: "error",
+          message: "Start time must be before end time"
+        });
+      }
+
       // Query to find available tables
       const query = `
       SELECT t.id, t.table_number, t.capacity, t.location
@@ -78,10 +96,20 @@ class TableContoller {
 
       const formattedDate = dayjs(bookingDate).format("YYYY-MM-DD");
 
+      // check for past date
+      if (dayjs(formattedDate).isBefore(dayjs(), "day")) {
+        return res.status(400).json({
+          type: "error",
+          message: "Cannot book a table for a past date"
+        });
+      }
+
       const amount = getTablePrice(formattedDate, startTime, endTime);
 
       // Check if the table exists and is active
-      const [tableCheck] = await connection.query(
+      const [
+        tableCheck
+      ] = await connection.query(
         `SELECT id,table_number, capacity, status FROM tables WHERE id = ?`,
         [tableId]
       );
@@ -104,12 +132,15 @@ class TableContoller {
       if (partySize > tableCheck[0].capacity) {
         return res.status(400).json({
           type: "error",
-          message: `This table can only accommodate ${tableCheck[0].capacity} people`
+          message: `This table can only accommodate ${tableCheck[0]
+            .capacity} people`
         });
       }
 
       // Check if the table is available for the requested time slot
-      const [existingBookings] = await connection.query(
+      const [
+        existingBookings
+      ] = await connection.query(
         `SELECT id FROM table_bookings
          WHERE table_id = ?
          AND booking_date = ?
@@ -139,7 +170,9 @@ class TableContoller {
       }
 
       // Check for existing pending booking with payment
-      const [existingBooking] = await connection.query(
+      const [
+        existingBooking
+      ] = await connection.query(
         `SELECT b.id, p.transaction_id, p.amount
          FROM table_bookings b
          JOIN table_booking_payments p ON b.id = p.booking_id
@@ -183,7 +216,9 @@ class TableContoller {
       }
 
       // Create new booking
-      const [bookingResult] = await connection.query(
+      const [
+        bookingResult
+      ] = await connection.query(
         `INSERT INTO table_bookings (
                 table_id,
                 table_number,
